@@ -1,5 +1,6 @@
 /* *** only sc13.h needs stdio.h. *** */
 /* *** I think sc13.h must include this by itself. *** */
+/* *** DON'T YOU THINK SO ??? ***/
 #include <stdio.h>
 
 #include <stdlib.h>
@@ -28,6 +29,7 @@ int main()
 		reinit_all();
 		if(!setjmp(jb)){
 			crosschannel_header(0);
+			/*returned with no vigour...*/
 			sc_output(0, NULL);
 		}else{	/*man, watch this! completed!*/
 			route[rcont-1]=N;
