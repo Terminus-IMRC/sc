@@ -11,7 +11,7 @@
 
 #define N 20
 
-int q[N], route[N+1];
+int q[N], route[N];
 int rcont=0;
 _Bool step[N];
 jmp_buf jb;
@@ -27,15 +27,13 @@ int main()
 
 	for(i=0; i<5; i++){
 		reinit_all();
-		if(!setjmp(jb)){
+		/*returned with no vigour...*/
+		/*or*/
+		/*man, watch this! completed!*/
+		/*is no longer been problem.*/
+		if(!setjmp(jb))
 			crosschannel(0);
-			/*returned with no vigour...*/
-			sc_output(0, NULL);
-		}else{	/*man, watch this! completed!*/
-			//route[rcont-1]=N;
-			//sc_output(measurelen(route), route);
-			sc_output(rcont, route);
-		}
+		sc_output(rcont, route);
 	}
 
 	return 0;
@@ -49,29 +47,14 @@ void reinit_all()
 	for(i=0; i<N; i++){
 		q[i]=atoi(fgets(str, 32, stdin));
 		step[i]=0;
-		route[i]=-1;
 	}
-	//step[0]=1;
 	rcont=0;
-	//rcont++;
-	//route[0]=0;
-	route[N]=-1;	/*to stop measuring*/
 
 	return;
 
 }
 
-int measurelen(int* r)
-{
-	int c=0;
-
-	while(*r++!=-1)
-		c++;
-
-	return c;
-}
-
-void crosschannel_header(int m)
+void crosschannel_header_l2(int m)
 {
 	int i;
 	int ideal[2];
@@ -96,10 +79,9 @@ void crosschannel(int m)
 	if(m==N-1)
 		longjmp(jb, 1);
 
-	crosschannel_header(m);
+	crosschannel_header_l2(m);
 
 	rcont--;
-	//route[rcont]=-1;
 
 	return;
 }
