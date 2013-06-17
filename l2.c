@@ -1,6 +1,6 @@
 /* *** only sc13.h needs stdio.h. *** */
 /* *** I think sc13.h must include this by itself. *** */
-/* *** DON'T YOU THINK SO ??? ***/
+/* *** DON'T YOU THINK SO ??? *** */
 #include <stdio.h>
 
 #include <stdlib.h>
@@ -28,12 +28,13 @@ int main()
 	for(i=0; i<5; i++){
 		reinit_all();
 		if(!setjmp(jb)){
-			crosschannel_header(0);
+			crosschannel(0);
 			/*returned with no vigour...*/
 			sc_output(0, NULL);
 		}else{	/*man, watch this! completed!*/
-			route[rcont-1]=N;
-			sc_output(measurelen(route), route);
+			//route[rcont-1]=N;
+			//sc_output(measurelen(route), route);
+			sc_output(rcont, route);
 		}
 	}
 
@@ -45,13 +46,16 @@ void reinit_all()
 	int i;
 	char str[32];
 
-	rcont=0;
 	for(i=0; i<N; i++){
 		q[i]=atoi(fgets(str, 32, stdin));
 		step[i]=0;
 		route[i]=-1;
 	}
-	route[N]=-1;
+	//step[0]=1;
+	rcont=0;
+	//rcont++;
+	//route[0]=0;
+	route[N]=-1;	/*to stop measuring*/
 
 	return;
 
@@ -81,16 +85,21 @@ void crosschannel_header(int m)
 		crosschannel(ideal[i]);
 		step[ideal[i]]=0;
 	}
+
+	return;
 }
 
 void crosschannel(int m)
 {
 	route[rcont++]=m;
 
-	if(!m)
+	if(m==N-1)
 		longjmp(jb, 1);
 
 	crosschannel_header(m);
 
 	rcont--;
+	//route[rcont]=-1;
+
+	return;
 }
